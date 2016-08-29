@@ -1,0 +1,39 @@
+{
+	"SERVER": {
+		"PORT": 8080
+	},
+	"PATHS": {
+		"CONFIG": {
+			"DIR": "config",
+			"PATH": "config/"
+		},
+		"DATA": {
+			"DIR": "data",
+			"PATH": "data/"
+		},
+		"VIEWS": {
+			"DIR": "views",
+			"PATH": "views/"
+		},
+		"PUBLIC": {
+			"DIR": "public",
+			"PATH": "public/"
+		},
+		"PROJECTS": {
+			"DIR": "projects/",
+			"PATH": "data/projects/"
+		},
+		"PAGES": {
+			"DIR": "pages",
+			"PATH": "views/pages/"
+		},
+		"TEMPLATES": {
+			"DIR": "templates",
+			"PATH": "views/templates/"
+		}
+	},
+	"FILE_EXTENSIONS": {
+		"TEMPLATE": ".html",
+		"DATA": ".json"
+	}
+}

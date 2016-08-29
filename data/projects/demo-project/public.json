@@ -1,0 +1,23 @@
+{
+	"meta": {
+		"title": "Meta Title"
+	},
+	"text": {
+  	"title": "Project 1",
+  	"subtitle": "This is the subtitle.",
+  	"excerpt": "This is the excerpt.",
+		"copy": "This is the copy"
+	},
+	"images": {
+		"hero": {
+			"src": "project-hero-image.jpg",
+			"alt": "..."
+		},
+		"supporting": [
+			{
+				"src": "image-1.jpg",
+				"alt": "..."
+			}
+		]
+	}
+}
