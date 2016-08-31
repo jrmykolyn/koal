@@ -65,13 +65,13 @@ function parseRoute( routeArr, response ) {
 
 function returnPage( page, response ) {
     getFile( 
-    PATHS.PAGES.PATH + page + FILE_EXTENSIONS.TEMPLATE,
-    function( data ) {
-        response.end( data );
-    },
-    function() {
-        return404( response );
-    }
+        PATHS.PAGES.PATH + page + FILE_EXTENSIONS.TEMPLATE,
+        function( data ) {
+            response.end( data );
+        },
+        function() {
+            return404( response );
+        }
   );
 }
 
@@ -106,9 +106,66 @@ function return404( response ) {
 // Update function to parse `config` && `public` data.
 // Compile template and execute response.
 function returnProject( project, response ) {  
-  // DO THE THINGS!
+    parseProjectConfig( project )
+        .then( parseProjectData )
+        .then( buildProjectTemplate )
+        .then(
+            function( data ) {
+                response.end( data );
+            }
+        )
+        .catch( function( err ) {
+            return404( response );
+        });
+}
 
-  response.end( 'TODO:' );
+
+// TODO:
+// Update function to:
+// - Evaluate contents of project 'config' file;
+// - Resolve with either well-formed 'config' options or framework defaults.
+function parseProjectConfig( projectName ) {
+    return new Promise(function( resolve ) {
+        getFile(
+            PATHS.PROJECTS.PATH + projectName + '/config.json',
+            function( data ) {
+                resolve( projectName, data );
+            },
+            function( err ) {
+                resolve( projectName, null );
+            }
+        );
+    });
+}
+
+
+// TODO:
+// Update function to:
+// - Scrape 'public' file for data and resolve if possible;
+// - Otherwise, reject with contextual message.
+function parseProjectData( projectName, configData ) {
+    return new Promise(function( resolve, reject ) {
+        getFile(
+            PATHS.PROJECTS.PATH + projectName + '/config.json',
+            function( data ) {
+                resolve( projectName, data );
+            },
+            function( err ) {
+                reject( err );
+            }
+        );
+    });
+}
+
+
+// TODO:
+// Update function to:
+// - Resolve Promise with assembled template;
+// - Or reject and trigger 404.
+function buildProjectTemplate( projectData ) {
+    return new Promise(function( resolve, reject) {
+        resolve( 'TODO:' ); /// TEMP
+    });
 }
 
 
