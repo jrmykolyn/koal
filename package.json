@@ -1,0 +1,19 @@
+{
+  "name": "koal",
+  "version": "1.0.0",
+  "description": "Koal is a Node-powered flat file CMS for portfolio websites.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrmykolyn/koal.git"
+  },
+  "author": "Jesse R Mykolyn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jrmykolyn/koal/issues"
+  },
+  "homepage": "https://github.com/jrmykolyn/koal#readme"
+}
