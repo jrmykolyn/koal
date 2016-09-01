@@ -12,7 +12,7 @@ const FILE_EXTENSIONS = ENV.FILE_EXTENSIONS;
 /* -------------------------------------------------- */
 var http = require( 'http' );
 var fs = require( 'fs' );
-
+var ejs = require( 'ejs' );
 
 /* -------------------------------------------------- */
 /* Declare Functions */
@@ -21,7 +21,13 @@ function handleRequest(request, response) {
     var route_arr = getRouteArr( request.url );
   
     if ( route_arr ) {
-        parseRoute( route_arr, response );  
+
+        if ( route_arr[route_arr.length - 1].indexOf('.') !== -1 ) {
+            parseAssetRequest( route_arr, response );
+        } else {
+            parseRoute( route_arr, response );
+        }
+
     } else {
         return404( response );
     } 
@@ -41,6 +47,13 @@ function getRouteArr(url) {
 }
 
 
+function parseAssetRequest( routeArr, response ) {
+    var asset_path = routeArr.slice( routeArr.length - 2 ).join( '/' );
+
+    returnAsset( asset_path, response );
+}
+
+
 function parseRoute( routeArr, response ) {
     switch ( routeArr[0] ) {
     case '/':
@@ -54,7 +67,6 @@ function parseRoute( routeArr, response ) {
         break;
     case 'projects':
         returnProject( routeArr[1], response );
-
 
         break;
     default:
@@ -146,9 +158,9 @@ function parseProjectConfig( projectName ) {
 function parseProjectData( projectName, configData ) {
     return new Promise(function( resolve, reject ) {
         getFile(
-            PATHS.PROJECTS.PATH + projectName + '/config.json',
+            PATHS.PROJECTS.PATH + projectName + '/public.json',
             function( data ) {
-                resolve( projectName, data );
+                resolve( { project_name: projectName, project_data: data } );
             },
             function( err ) {
                 reject( err );
@@ -160,11 +172,28 @@ function parseProjectData( projectName, configData ) {
 
 // TODO:
 // Update function to:
-// - Resolve Promise with assembled template;
-// - Or reject and trigger 404.
-function buildProjectTemplate( projectData ) {
+// - Refactor call to `ejs.render()`;
+// - Rebuild logic for returning `view`'
+// - Consider serving 'error' page if template fails to compile.
+function buildProjectTemplate( data ) {
     return new Promise(function( resolve, reject) {
-        resolve( 'TODO:' ); /// TEMP
+        getFile(
+            PATHS.TEMPLATES.PATH + data.project_name + '.ejs',
+            function( template ) {
+                var view;
+
+                try {
+                    view = ejs.render( template.toString(), JSON.parse( data.project_data.toString() ) );
+                } catch ( err ) {
+                    view = 'Failed to compile template.';
+                }
+
+                resolve( view );
+            },
+            function( err ) {
+                reject( err );
+            }
+        );
     });
 }
 

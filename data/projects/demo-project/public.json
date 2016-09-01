@@ -3,10 +3,14 @@
 		"title": "Meta Title"
 	},
 	"text": {
-  	"title": "Project 1",
-  	"subtitle": "This is the subtitle.",
-  	"excerpt": "This is the excerpt.",
-		"copy": "This is the copy"
+  		"title": "Project 1",
+  		"subtitle": "This is the subtitle.",
+  		"excerpt": "This is the excerpt.",
+		"copy": [
+			"This is some copy.",
+			"This is some more copy.",
+			"This is the last line of copy."
+		]
 	},
 	"images": {
 		"hero": {
