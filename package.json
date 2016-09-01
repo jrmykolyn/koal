@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jrmykolyn/koal/issues"
   },
-  "homepage": "https://github.com/jrmykolyn/koal#readme"
+  "homepage": "https://github.com/jrmykolyn/koal#readme",
+  "dependencies": {
+    "ejs": "^2.5.1"
+  }
 }
