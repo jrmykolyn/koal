@@ -1,0 +1,10 @@
+<h1><%= text.title %></h1>
+<h2><%= text.subtitle %></h2>
+<p class="excerpt"><%= text.excerpt %></p>
+<% if ( Array.isArray( text.copy ) ) { %>
+	<% text.copy.forEach( function(copy_item) { %>
+		<p><%= copy_item %></p>
+	<% } ) %>
+<% } else { %>
+	<p>Whoops, looks like the `copy` property wasn't formatted correctly.</p>
+<% } %>

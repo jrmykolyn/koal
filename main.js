@@ -172,28 +172,31 @@ function parseProjectData( projectName, configData ) {
 
 // TODO:
 // Update function to:
-// - Refactor call to `ejs.render()`;
-// - Rebuild logic for returning `view`'
-// - Consider serving 'error' page if template fails to compile.
+// - Rebuild logic for returning `view`';
+// - Update logic to dynamically serve 'template' or 'page' file.
 function buildProjectTemplate( data ) {
-    return new Promise(function( resolve, reject) {
-        getFile(
-            PATHS.TEMPLATES.PATH + data.project_name + '.ejs',
-            function( template ) {
-                var view;
+    // Parse properties on `data` obj. and assign to local vars.
+    var layout_data = JSON.parse( data.project_data.toString() ),
+        template_data = JSON.parse( data.project_data.toString() );
 
-                try {
-                    view = ejs.render( template.toString(), JSON.parse( data.project_data.toString() ) );
-                } catch ( err ) {
-                    view = 'Failed to compile template.';
+    // Build `opts` object.
+    var opts = {
+        partial: 'templates/demo-partial.ejs',
+        layoutData: layout_data,
+        templateData: template_data
+    };
+
+    return new Promise(function( resolve, reject ) {
+        try {
+            ejs.renderFile( PATHS.VIEWS.PATH + 'layout.ejs', opts, function( err, result ) {
+                if (!err) {
+                    resolve( result );
                 }
-
-                resolve( view );
-            },
-            function( err ) {
                 reject( err );
-            }
-        );
+            });
+        } catch ( err ) {
+            reject( err );
+        }
     });
 }
 
