@@ -75,16 +75,32 @@ function parseRoute( routeArr, response ) {
 }
 
 
+// TODO:
+// - Delete assembly of 'viewData' to separate 'helper' function;
+// - Consider alternative to wrapping 'response building' logic in `try/catch`;
+// - Consider pulling 'response building' logic 'helper' fn().
 function returnPage( page, response ) {
-    getFile( 
-        PATHS.PAGES.PATH + page + FILE_EXTENSIONS.TEMPLATE,
-        function( data ) {
-            response.end( data );
+    var viewData = {
+        partial: 'pages/' + page + '.ejs',
+        layoutData: {
+            meta: {
+               title: page
+            }
         },
-        function() {
+        templateData: null
+    };
+
+    try {
+        ejs.renderFile( PATHS.VIEWS.PATH + 'layout.ejs', viewData, function( err, result ) {
+            if (!err) {
+                response.end( result );
+            }
+
             return404( response );
-        }
-  );
+        });
+    } catch ( err ) {
+        return404( response );
+    }
 }
 
 
