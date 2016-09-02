@@ -174,21 +174,32 @@ function parseProjectData( projectName, configData ) {
 // Update function to:
 // - Rebuild logic for returning `view`';
 // - Update logic to dynamically serve 'template' or 'page' file.
+// - Revisit `ejsOpts`, remove if unnecessary.
+// - Figure out better way to ``
 function buildProjectTemplate( data ) {
     // Parse properties on `data` obj. and assign to local vars.
     var layout_data = JSON.parse( data.project_data.toString() ),
         template_data = JSON.parse( data.project_data.toString() );
 
-    // Build `opts` object.
-    var opts = {
+    // Add `contextData` to `layout...` && `template...` objs.
+    layout_data.contextData = { images: '../images/' };
+    template_data.contextData = { images: '../images/' };
+
+    // Build `viewData` object.
+    var viewData = {
         partial: 'templates/demo-partial.ejs',
         layoutData: layout_data,
         templateData: template_data
     };
 
+    // Build `ejsOpts` obj.
+    var ejsOpts = {
+        cache: false
+    };
+
     return new Promise(function( resolve, reject ) {
         try {
-            ejs.renderFile( PATHS.VIEWS.PATH + 'layout.ejs', opts, function( err, result ) {
+            ejs.renderFile( PATHS.VIEWS.PATH + 'layout.ejs', viewData, ejsOpts, function( err, result ) {
                 if (!err) {
                     resolve( result );
                 }
