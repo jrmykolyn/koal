@@ -1,4 +1,5 @@
 {
-  "route_aliases": {
-  }
+	"template": "koal-demo",
+  	"route_aliases": {
+  	}
 }

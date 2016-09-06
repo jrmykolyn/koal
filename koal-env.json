@@ -15,6 +15,10 @@
 			"DIR": "views",
 			"PATH": "views/"
 		},
+		"THEMES": {
+			"DIR": "themes",
+			"PATH": "themes/"
+		},
 		"PUBLIC": {
 			"DIR": "public",
 			"PATH": "public/"

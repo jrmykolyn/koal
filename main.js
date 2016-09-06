@@ -5,6 +5,7 @@ const ENV = require( './koal-env' );
 const SERVER = ENV.SERVER;
 const PATHS = ENV.PATHS;
 const FILE_EXTENSIONS = ENV.FILE_EXTENSIONS;
+const CONFIG = require( './config/config' );
 
 
 /* -------------------------------------------------- */
@@ -136,7 +137,7 @@ function returnProject( project, response ) {
 function parseProjectConfig( projectName ) {
     return new Promise(function( resolve ) {
         getFile(
-            PATHS.PROJECTS.PATH + projectName + '/config.json',
+            getPathByType( 'projects' ) + projectName + '/config.json',
             function( data ) {
                 resolve( projectName, data );
             },
@@ -155,7 +156,7 @@ function parseProjectConfig( projectName ) {
 function parseProjectData( projectName, configData ) {
     return new Promise(function( resolve, reject ) {
         getFile(
-            PATHS.PROJECTS.PATH + projectName + '/public.json',
+            getPathByType( 'projects' ) + projectName + '/public.json',
             function( data ) {
                 resolve( { project_name: projectName, project_data: data } );
             },
@@ -202,7 +203,7 @@ function assembleProjectData( data ) {
 
 function returnAsset( asset, response ) {
     getFile(
-    PATHS.PUBLIC.PATH + asset,
+    getPathByType( 'public' ) + asset,
     function( data ) {
         response.end( data );
     },
@@ -253,7 +254,7 @@ function buildView( data ) {
 
     return new Promise(function( resolve, reject ) {
         try {
-            ejs.renderFile( PATHS.VIEWS.PATH + 'layout.ejs', viewData, ejsOpts, function( err, result ) {
+            ejs.renderFile( getPathByType( 'themes' ) + 'koal-demo/' + 'layout.ejs', viewData, ejsOpts, function( err, result ) {
                 if (!err) {
                     resolve( result );
                     return;
@@ -277,6 +278,38 @@ function getFile( path, onSuccess, onFail ) {
 
         onSuccess( data );
     });
+}
+
+
+function getPathByType( pathType ) {
+
+    if ( typeof pathType !== 'string' ) {
+        return;
+    }
+
+    switch ( pathType ) {
+        case 'config':
+        case 'data':
+        case 'themes':
+        case 'public':
+
+            return PATHS[pathType.toUpperCase()].PATH;
+
+            break;
+        case 'templates':
+        case 'pages':
+
+            return getPathByType( 'themes' ) + pathType + '/';
+
+            break;
+        case 'projects':
+
+            return getPathByType( 'data' ) + pathType + '/';
+
+            break;
+        default:
+            // DO NO THINGS;
+    }
 }
 
 
