@@ -216,12 +216,32 @@ function returnAsset( asset, response ) {
 function return404( response ) {
     response.writeHead( 404 );
 
-    fs.readFile( PATHS.PAGES.PATH + '404' + FILE_EXTENSIONS.TEMPLATE, function(err, data) {
-        if ( err ) {
-            response.end( err );
-        }
+    assemble404Data()
+        .then( buildView )
+        .then(
+            function( data ) {
+                response.end( data );
+            }
+        )
+        .catch( function( err ) {
+            response.end( 'FATAL ERROR' );
+        });
+}
 
-        response.end( data );
+
+function assemble404Data() {
+    return new Promise(function( resolve, reject ) {
+        var viewData = {
+            partial: 'pages/404.ejs',
+            layoutData: {
+                meta: {
+                    title: '404'
+                }
+            },
+            templateData: null
+        };
+
+        resolve ( { viewData: viewData } );
     });
 }
 
