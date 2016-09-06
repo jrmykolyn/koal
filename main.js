@@ -76,56 +76,36 @@ function parseRoute( routeArr, response ) {
 
 
 // TODO:
-// - Delete assembly of 'viewData' to separate 'helper' function;
 // - Consider alternative to wrapping 'response building' logic in `try/catch`;
-// - Consider pulling 'response building' logic 'helper' fn().
 function returnPage( page, response ) {
-    var viewData = {
-        partial: 'pages/' + page + '.ejs',
-        layoutData: {
-            meta: {
-               title: page
+    assemblePageData( page )
+        .then( buildView )
+        .then(
+            function( data ) {
+                response.end( data );
             }
-        },
-        templateData: null
-    };
-
-    try {
-        ejs.renderFile( PATHS.VIEWS.PATH + 'layout.ejs', viewData, function( err, result ) {
-            if (!err) {
-                response.end( result );
-            }
-
+        )
+        .catch( function( err ) {
             return404( response );
         });
-    } catch ( err ) {
-        return404( response );
-    }
 }
 
 
-function returnAsset( asset, response ) {
-    getFile(
-    PATHS.PUBLIC.PATH + asset,
-    function( data ) {
-        response.end( data );
-    },
-    function() {
-        return404( response );
-    }
-  );
-}
+function assemblePageData( page ) {
+    return new Promise(function( resolve, reject ) {
+        var viewData = {
+            partial: 'pages/' + page + '.ejs',
+            layoutData: {
+                meta: {
+                   title: page
+                }
+            },
+            templateData: null
+        };
 
+        var ejsOpts = {};
 
-function return404( response ) {
-    response.writeHead( 404 );
-
-    fs.readFile( PATHS.PAGES.PATH + '404' + FILE_EXTENSIONS.TEMPLATE, function(err, data) {
-        if ( err ) {
-            response.end( err );
-        }
-
-        response.end( data );
+        resolve( { viewData: viewData, ejsOpts: ejsOpts } );
     });
 }
 
@@ -136,7 +116,8 @@ function return404( response ) {
 function returnProject( project, response ) {  
     parseProjectConfig( project )
         .then( parseProjectData )
-        .then( buildProjectTemplate )
+        .then( assembleProjectData )
+        .then( buildView )
         .then(
             function( data ) {
                 response.end( data );
@@ -192,33 +173,72 @@ function parseProjectData( projectName, configData ) {
 // - Update logic to dynamically serve 'template' or 'page' file.
 // - Revisit `ejsOpts`, remove if unnecessary.
 // - Figure out better way to ``
-function buildProjectTemplate( data ) {
-    // Parse properties on `data` obj. and assign to local vars.
-    var layout_data = JSON.parse( data.project_data.toString() ),
-        template_data = JSON.parse( data.project_data.toString() );
+function assembleProjectData( data ) {
+    return new Promise(function( resolve, reject ) {
+        // Parse properties on `data` obj. and assign to local vars.
+        var layout_data = JSON.parse( data.project_data.toString() ),
+            template_data = JSON.parse( data.project_data.toString() );
 
-    // Add `contextData` to `layout...` && `template...` objs.
-    layout_data.contextData = { images: '../images/' };
-    template_data.contextData = { images: '../images/' };
+        // Add `contextData` to `layout...` && `template...` objs.
+        layout_data.contextData = { images: '../images/' };
+        template_data.contextData = { images: '../images/' };
 
-    // Build `viewData` object.
-    var viewData = {
-        partial: 'templates/demo-partial.ejs',
-        layoutData: layout_data,
-        templateData: template_data
-    };
+        // Build `viewData` object.
+        var viewData = {
+            partial: 'templates/demo-partial.ejs',
+            layoutData: layout_data,
+            templateData: template_data
+        };
 
-    // Build `ejsOpts` obj.
-    var ejsOpts = {
-        cache: false
-    };
+        // Build `ejsOpts` obj.
+        var ejsOpts = {
+            cache: false
+        };
+
+        resolve( { viewData: viewData, elsOpts: ejsOpts } );
+    });
+}
+
+
+function returnAsset( asset, response ) {
+    getFile(
+    PATHS.PUBLIC.PATH + asset,
+    function( data ) {
+        response.end( data );
+    },
+    function() {
+        return404( response );
+    }
+  );
+}
+
+
+function return404( response ) {
+    response.writeHead( 404 );
+
+    fs.readFile( PATHS.PAGES.PATH + '404' + FILE_EXTENSIONS.TEMPLATE, function(err, data) {
+        if ( err ) {
+            response.end( err );
+        }
+
+        response.end( data );
+    });
+}
+
+
+function buildView( data ) {
+    data = data || {};
+    viewData = data.viewData || {};
+    ejsOpts = data.ejsOpts || {};
 
     return new Promise(function( resolve, reject ) {
         try {
             ejs.renderFile( PATHS.VIEWS.PATH + 'layout.ejs', viewData, ejsOpts, function( err, result ) {
                 if (!err) {
                     resolve( result );
+                    return;
                 }
+
                 reject( err );
             });
         } catch ( err ) {
