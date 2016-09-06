@@ -18,5 +18,9 @@
   "homepage": "https://github.com/jrmykolyn/koal#readme",
   "dependencies": {
     "ejs": "^2.5.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^2.3.2"
   }
 }
