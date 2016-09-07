@@ -1,6 +1,7 @@
 $nav: '.nav';
 $nav-logo: '.nav-logo';
 $nav-links: '.nav-links';
+$nav-controls: '.nav-controls';
 
 #{$nav} {
 	@include size(100% auto);
@@ -10,7 +11,14 @@ $nav-links: '.nav-links';
 }
 
 #{$nav-logo} {
-	@include span-columns(6 of 12);
+	@include span-columns(10 of 12);
+
+	height: rem(50); /// TEMP
+	background-color: $color-placeholder; /// TEMP
+}
+
+#{$nav-controls} {
+	@include span-columns(2 of 12);
 
 	height: rem(50); /// TEMP
 	background-color: $color-placeholder; /// TEMP

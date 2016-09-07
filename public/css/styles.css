@@ -486,11 +486,24 @@ template {
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 48.82117%;
+  width: 82.94039%;
   height: 3.125rem;
   background-color: rgba(0, 0, 0, 0.15);
 }
 
 .nav-logo:last-child {
+  margin-right: 0;
+}
+
+.nav-controls {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 14.70196%;
+  height: 3.125rem;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.nav-controls:last-child {
   margin-right: 0;
 }
