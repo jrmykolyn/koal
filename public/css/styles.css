@@ -511,3 +511,10 @@ html {
 .nav-controls:last-child {
   margin-right: 0;
 }
+
+.hero-image {
+  height: auto;
+  width: 100%;
+  min-height: 40rem;
+  background-color: rgba(0, 0, 0, 0.15);
+}

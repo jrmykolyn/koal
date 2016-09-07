@@ -1,0 +1,8 @@
+$hero-image: '.hero-image';
+
+#{$hero-image} {
+	@include size(100% auto);
+
+	min-height: 40rem; /// TEMP
+	background-color: $color-placeholder; /// TEMP
+}

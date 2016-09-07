@@ -1,12 +1,19 @@
-<h1><%= text.title %></h1>
-<h2><%= text.subtitle %></h2>
-<p class="excerpt"><%= text.excerpt %></p>
-<% if ( Array.isArray( text.copy ) ) { %>
-	<% text.copy.forEach( function(copy_item) { %>
-		<p><%= copy_item %></p>
-	<% } ) %>
-<% } else { %>
-	<p>Whoops, looks like the `copy` property wasn't formatted correctly.</p>
-<% } %>
+<section class="layout-section">
+	<div class="hero-image"></div><!-- .hero-image -->
+</section><!-- .layout-section -->
+<section class="layout-section">
+	<div class="layout-row--grid">
+		<h1><%= text.title %></h1>
+		<h2><%= text.subtitle %></h2>
+		<p class="excerpt"><%= text.excerpt %></p>
+		<% if ( Array.isArray( text.copy ) ) { %>
+			<% text.copy.forEach( function(copy_item) { %>
+				<p><%= copy_item %></p>
+			<% } ) %>
+		<% } else { %>
+			<p>Whoops, looks like the `copy` property wasn't formatted correctly.</p>
+		<% } %>
 
-<img src="<%= contextData.images %>test-img.png" />
+		<img src="<%= contextData.images %>test-img.png" />
+	</div><!-- .layout-row--grid -->
+</section><!-- .layout-section -->
