@@ -13,9 +13,10 @@ const CONFIG = require ( './config/config' );
 /* -------------------------------------------------- */
 /* DECLARE TASKS */
 /* -------------------------------------------------- */
-gulp.task( 'default', [ 'sass' ], function() {
+gulp.task( 'default', [ 'sass', 'watch' ], function() {
 	console.log( 'INSIDE TASK: `default`' );
 } );
+
 
 gulp.task( 'sass', function() {
 	console.log( 'INSIDE TASK: `sass`' );
@@ -23,4 +24,11 @@ gulp.task( 'sass', function() {
 	return gulp.src( ENV.PATHS.THEMES.PATH + CONFIG.template + '/scss/styles.scss' )
 		.pipe( sass( { outputStyle: 'expanded' } ) )
 		.pipe( gulp.dest( './public/css/' ) );
+} );
+
+
+gulp.task( 'watch', function() {
+	console.log( 'INSIDE TASK: `watch`' );
+
+	gulp.watch( ENV.PATHS.THEMES.PATH + CONFIG.template + '/scss/**/*.scss', [ 'sass' ] );
 } );
