@@ -1,1 +1,6 @@
+// Bourbon SASS Library
 @import 'bourbon/bourbon';
+
+// Neat SASS Grid Framework
+@import '../config/grid-settings/manifest.scss'; // Required grid settings/overrides are defined within the theme's SCSS 'config/' dir.
+@import 'neat/neat';

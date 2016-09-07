@@ -1,0 +1,17 @@
+$nav: '.nav';
+$nav-logo: '.nav-logo';
+$nav-links: '.nav-links';
+
+#{$nav} {
+	@include size(100% auto);
+
+	height: rem(50); /// TEMP
+	background-color: $color-placeholder; /// TEMP
+}
+
+#{$nav-logo} {
+	@include span-columns(6 of 12);
+
+	height: rem(50); /// TEMP
+	background-color: $color-placeholder; /// TEMP
+}

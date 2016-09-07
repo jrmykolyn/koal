@@ -1,0 +1,18 @@
+$layout-section: '.layout-section';
+$layout-row: '.layout-row';
+
+#{$layout-section} {
+	@include size(100% auto);
+}
+
+#{$layout-row} {
+	width: 100%;
+}
+
+#{$layout-row}--grid {
+	@extend #{$layout-row};
+
+	@include outer-container;
+
+	width: map-get($project-grid, 'width-default');
+}

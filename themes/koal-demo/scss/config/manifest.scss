@@ -1,1 +1,5 @@
+// NOTE:
+// *DO NOT* include the './grid-settings/manifest.scss' file here.
+// File to be included from within the vendor manifest, immediately prior to 'Neat'.
+
 @import 'variables/manifest'
